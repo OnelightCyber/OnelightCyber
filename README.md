@@ -10,6 +10,7 @@
   <img src="https://img.shields.io/badge/Focus-Cybersecurity-EF4444?style=flat-square" />
   <img src="https://img.shields.io/badge/Building-IcarusGroup-111827?style=flat-square" />
   <img src="https://img.shields.io/badge/Research-AI%20Security-2563EB?style=flat-square" />
+  <img src="https://komarev.com/ghpvc/?username=OnelightCyber&label=Profile%20Views&color=EF4444&style=flat-square" />
 </p>
 
 ---
