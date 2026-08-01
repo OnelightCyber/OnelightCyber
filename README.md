@@ -86,18 +86,4 @@ Building solutions around:
 
 - GitHub: https://github.com/OnelightCyber
 - Discord: Onelight
-TARGET:
-example.com/path
 
-SCAN
-EXPLAIN
-PAYLOAD
-AGENT
-LOG
-Search modules…
-PRO
-Open panel to connect…
-LAUNCH SCAN
-—
-Ctrl+Shift+A
-Web app ↗
