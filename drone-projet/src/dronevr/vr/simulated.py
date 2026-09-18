@@ -38,6 +38,21 @@ class SimulatedTracker(HeadTracker):
         self._lock = threading.Lock()
         self._pose = HeadPose()
         self._t0 = time.monotonic()
+        self._connected = True
+
+    @property
+    def connected(self) -> bool:
+        return self._connected
+
+    def set_connected(self, connected: bool) -> None:
+        """Branche ou debranche le casque virtuel.
+
+        Debranche, le tracker cesse de rafraichir l'horodatage : les poses
+        vieillissent et le watchdog de ``SafetyMonitor`` finit par declencher.
+        C'est ce qui permet de demontrer la perte de casque sans avoir de
+        casque, et de verifier que le drone repasse bien en stationnaire.
+        """
+        self._connected = bool(connected)
 
     def set_pose(self, yaw: float, pitch: float, roll: float = 0.0) -> None:
         """Injecte une pose (mode ``manual``), en radians.
@@ -54,6 +69,12 @@ class SimulatedTracker(HeadTracker):
             self._pose = pose
 
     def read(self) -> HeadPose:
+        # Debranche : on renvoie la derniere pose telle quelle, avec son
+        # horodatage d'origine, pour qu'elle vieillisse.
+        if not self._connected:
+            with self._lock:
+                return self._pose
+
         if self.pattern == "orbit":
             elapsed = time.monotonic() - self._t0
             phase = 2.0 * math.pi * elapsed / ORBIT_PERIOD
@@ -68,5 +89,9 @@ class SimulatedTracker(HeadTracker):
         if self.pattern == "still":
             return HeadPose()
 
+        # Un casque branche emet en continu, meme tete immobile : on
+        # rafraichit donc l'horodatage a chaque lecture, sinon le watchdog
+        # se declencherait des que le pilote arrete de bouger.
         with self._lock:
-            return self._pose
+            pose = self._pose
+        return HeadPose(yaw=pose.yaw, pitch=pose.pitch, roll=pose.roll)
