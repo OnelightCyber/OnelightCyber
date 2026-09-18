@@ -1,0 +1,58 @@
+# Configuration par defaut du projet drone VR.
+# Tous les angles sont en DEGRES ici ; ils sont convertis en radians au
+# chargement (voir src/dronevr/config.py).
+
+# sim  = drone simule, aucun materiel necessaire
+# real = vrai drone via MAVLink
+backend: sim
+
+# sim   = casque simule (souris / clavier / mouvement automatique)
+# webxr = vrai casque VR via le navigateur
+tracker: sim
+
+host: 127.0.0.1
+port: 8000
+loop_hz: 50
+
+# Utilise uniquement quand backend: real
+mavlink_url: "udp:127.0.0.1:14550"
+# Index de webcam ("0") ou URL RTSP du recepteur FPV
+camera_source: "0"
+
+control:
+  # gimbal     : la tete ne bouge que la nacelle. Le drone ne bouge pas.
+  #              -> a utiliser pour les premiers vols et pour la demo.
+  # yaw_follow : la tete fait tourner le drone en lacet, le tangage reste
+  #              sur la nacelle. C'est le mode "immersif" du projet.
+  # full       : la tete pilote aussi l'assiette. Reserve aux pilotes surs.
+  mode: gimbal
+
+  head_deadzone: 2.0      # zone morte : sous 2 deg, la tete est "immobile"
+  max_head_yaw: 75.0      # amplitude de tete = consigne maximale
+  max_head_pitch: 50.0
+
+  max_gimbal_yaw: 140.0   # butees mecaniques de la nacelle
+  max_gimbal_pitch: 90.0
+
+  max_tilt: 25.0          # assiette max du drone
+  max_yaw_rate: 90.0      # vitesse de rotation max (deg/s)
+
+  expo: 0.4               # 0 = lineaire, proche de 1 = tres doux au centre
+  smoothing_tau: 0.12     # lissage du casque (s)
+  max_gimbal_rate: 180.0  # vitesse max de la nacelle (deg/s)
+
+safety:
+  head_timeout: 0.5       # sans pose de tete pendant 0.5 s -> stationnaire
+  max_altitude: 50.0      # geofence verticale (m)
+  max_distance: 100.0     # geofence horizontale (m)
+  battery_warning: 0.30
+  battery_failsafe: 0.15  # en dessous -> atterrissage automatique
+  landing_speed: 0.8
+
+video:
+  width: 640
+  height: 360
+  fps: 30
+  camera_fov: 90.0
+  jpeg_quality: 70
+  osd: true
