@@ -29,18 +29,6 @@ Areas of interest:
 
 ---
 
-## IcarusGroup
-
-**IcarusGroup** is a cybersecurity and AI company focused on developing modern security technologies.
-
-Building solutions around:
-- AI-powered security systems
-- Automation
-- Security research
-- Next-generation cyber tools
-
----
-
 ## Technologies
 
 ### Programming Languages
